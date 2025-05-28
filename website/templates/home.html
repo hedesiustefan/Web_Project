@@ -1,6 +1,39 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>This is the home page</h1>
-{% endblock%}
+<h2>Train Route Planner</h2>
+
+<form method="POST">
+    <label for="from_city">From:</label>
+    <select name="from_city" required>
+        {% for city in cities %}
+            <option value="{{ city.id }}">{{ city.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="to_city">To:</label>
+    <select name="to_city" required>
+        {% for city in cities %}
+            <option value="{{ city.id }}">{{ city.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Find Route</button>
+</form>
+
+{% if route %}
+    <h3>Route Details</h3>
+    <ul>
+        <li><strong>From:</strong> {{ route.from_city.name }}</li>
+        <li><strong>To:</strong> {{ route.to_city.name }}</li>
+        <li><strong>Train:</strong> {{ route.train_name }}</li>
+        <li><strong>Departure:</strong> {{ route.departure }}</li>
+        <li><strong>Arrival:</strong> {{ route.arrival }}</li>
+        <li><strong>Duration:</strong> {{ route.duration }}</li>
+    </ul>
+{% elif request.method == 'POST' %}
+    <p>No route found.</p>
+{% endif %}
+{% endblock %}
+
 
