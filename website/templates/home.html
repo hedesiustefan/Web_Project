@@ -26,21 +26,22 @@
     <button type="submit" class="btn btn-primary">Find Route</button>
 </form>
 
-{% if route_path %}
-    <h4>Route Plan</h4>
-    <ol class="list-group">
-        {% for route in route_path %}
-            <li class="list-group-item">
-                <strong>{{ route.from_city.name }}</strong> → 
-                <strong>{{ route.to_city.name }}</strong><br />
-                Train: {{ route.train_name }}<br />
-                Departure: {{ route.departure }} — Arrival: {{ route.arrival }}<br />
-                Duration: {{ route.duration }}
+{% if path %}
+    <h3>Route Plan</h3>
+    <ol>
+        {% for segment in path %}
+            <li>
+                <strong>From:</strong> {{ segment.from_city.name }} →
+                <strong>To:</strong> {{ segment.to_city.name }} |
+                <strong>Train:</strong> {{ segment.train_name }} |
+                <strong>Dep:</strong> {{ segment.departure }} |
+                <strong>Arr:</strong> {{ segment.arrival }} |
+                <strong>Dur:</strong> {{ segment.duration }}
             </li>
         {% endfor %}
     </ol>
 {% elif request.method == 'POST' %}
-    <div class="alert alert-warning mt-4">No route found.</div>
+    <p>No route found between selected cities.</p>
 {% endif %}
 {% endblock %}
 
