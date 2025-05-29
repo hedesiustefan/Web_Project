@@ -9,7 +9,8 @@ DB_NAME = 'database.db'
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'Vit@delaris@05'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Vit%40delaris%4005@localhost/train_app'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://train_app_d7hh_user:gqrWx3nSB1dT1ML7zUsYa083ImDo7yiT@dpg-d0s9ki3ipnbc73eprh4g-a.frankfurt-postgres.render.com/train_app_d7hh'
+
     db.init_app(app)
 
     from .views import views
@@ -38,7 +39,7 @@ def create_database(app_):
     with app_.app_context():
         db.create_all()
     print('Ensured tables exist in the PostgreSQL database!')
-    
+
 # def create_database(app_):
 #     if not path.exists('website/' + DB_NAME):
 #         with app_.app_context():
