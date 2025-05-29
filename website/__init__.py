@@ -9,7 +9,7 @@ DB_NAME = 'database.db'
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'Vit@delaris@05'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Vit%40delaris%4005@localhost/train_app'
     db.init_app(app)
 
     from .views import views
@@ -33,10 +33,16 @@ def create_app():
 
     return app
 
+
 def create_database(app_):
-    if not path.exists('website/' + DB_NAME):
-        with app_.app_context():
-            db.create_all()
-        print('Created Database!')
-    else:
-        print('Database already exists.')
+    with app_.app_context():
+        db.create_all()
+    print('Ensured tables exist in the PostgreSQL database!')
+    
+# def create_database(app_):
+#     if not path.exists('website/' + DB_NAME):
+#         with app_.app_context():
+#             db.create_all()
+#         print('Created Database!')
+#     else:
+#         print('Database already exists.')

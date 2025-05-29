@@ -90,5 +90,9 @@ for from_name, to_name, train, dep, arr, dur in routes:
         )
         db.session.add(new_route)
 
-db.session.commit()
-print("New routes added (if not already present).")
+try:
+    db.session.commit()
+    print("New routes added (if not already present).")
+except Exception as e:
+    db.session.rollback()
+    print(f"Error committing to DB: {e}")
