@@ -26,18 +26,19 @@
     <button type="submit" class="btn btn-primary">Find Route</button>
 </form>
 
-{% if route %}
-    <div class="mt-5">
-        <h4>Route Details</h4>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>From:</strong> {{ route.from_city.name }}</li>
-            <li class="list-group-item"><strong>To:</strong> {{ route.to_city.name }}</li>
-            <li class="list-group-item"><strong>Train:</strong> {{ route.train_name }}</li>
-            <li class="list-group-item"><strong>Departure:</strong> {{ route.departure }}</li>
-            <li class="list-group-item"><strong>Arrival:</strong> {{ route.arrival }}</li>
-            <li class="list-group-item"><strong>Duration:</strong> {{ route.duration }}</li>
-        </ul>
-    </div>
+{% if route_path %}
+    <h4>Route Plan</h4>
+    <ol class="list-group">
+        {% for route in route_path %}
+            <li class="list-group-item">
+                <strong>{{ route.from_city.name }}</strong> → 
+                <strong>{{ route.to_city.name }}</strong><br />
+                Train: {{ route.train_name }}<br />
+                Departure: {{ route.departure }} — Arrival: {{ route.arrival }}<br />
+                Duration: {{ route.duration }}
+            </li>
+        {% endfor %}
+    </ol>
 {% elif request.method == 'POST' %}
     <div class="alert alert-warning mt-4">No route found.</div>
 {% endif %}
