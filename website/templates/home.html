@@ -1,38 +1,45 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
-<h2>Train Route Planner</h2>
+<h3 class="text-center">Train Route Planner</h3>
 
-<form method="POST">
-    <label for="from_city">From:</label>
-    <select name="from_city" required>
-        {% for city in cities %}
-            <option value="{{ city.id }}">{{ city.name }}</option>
-        {% endfor %}
-    </select>
+<form method="POST" class="mt-4">
+    <div class="form-group mb-3">
+        <label for="from_city">From:</label>
+        <select name="from_city" id="from_city" class="form-control" required>
+            {% for city in cities %}
+                <option value="{{ city.id }}">{{ city.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <label for="to_city">To:</label>
-    <select name="to_city" required>
-        {% for city in cities %}
-            <option value="{{ city.id }}">{{ city.name }}</option>
-        {% endfor %}
-    </select>
+    <div class="form-group mb-3">
+        <label for="to_city">To:</label>
+        <select name="to_city" id="to_city" class="form-control" required>
+            {% for city in cities %}
+                <option value="{{ city.id }}">{{ city.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <button type="submit">Find Route</button>
+    <button type="submit" class="btn btn-primary">Find Route</button>
 </form>
 
 {% if route %}
-    <h3>Route Details</h3>
-    <ul>
-        <li><strong>From:</strong> {{ route.from_city.name }}</li>
-        <li><strong>To:</strong> {{ route.to_city.name }}</li>
-        <li><strong>Train:</strong> {{ route.train_name }}</li>
-        <li><strong>Departure:</strong> {{ route.departure }}</li>
-        <li><strong>Arrival:</strong> {{ route.arrival }}</li>
-        <li><strong>Duration:</strong> {{ route.duration }}</li>
-    </ul>
+    <div class="mt-5">
+        <h4>Route Details</h4>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>From:</strong> {{ route.from_city.name }}</li>
+            <li class="list-group-item"><strong>To:</strong> {{ route.to_city.name }}</li>
+            <li class="list-group-item"><strong>Train:</strong> {{ route.train_name }}</li>
+            <li class="list-group-item"><strong>Departure:</strong> {{ route.departure }}</li>
+            <li class="list-group-item"><strong>Arrival:</strong> {{ route.arrival }}</li>
+            <li class="list-group-item"><strong>Duration:</strong> {{ route.duration }}</li>
+        </ul>
+    </div>
 {% elif request.method == 'POST' %}
-    <p>No route found.</p>
+    <div class="alert alert-warning mt-4">No route found.</div>
 {% endif %}
 {% endblock %}
 
