@@ -26,18 +26,37 @@
     <button type="submit" class="btn btn-primary">Find Route</button>
 </form>
 
-{% if routes %}
-    <h3>Fastest Route</h3>
-    <ol>
-        {% for r in routes %}
-        <li>
-            <strong>{{ r.from_city.name }}</strong> → <strong>{{ r.to_city.name }}</strong><br>
-            Train: {{ r.train_name }} | Departure: {{ r.departure }} | Arrival: {{ r.arrival }} | Duration: {{ r.duration }}
-        </li>
+{% if route_summaries %}
+    <h3>Available Routes</h3>
+    <ul>
+        {% for duration, steps in route_summaries %}
+            <li>
+                {% if loop.index0 == selected_index %}
+                    <strong>
+                        Route {{ loop.index }} (Selected) — {{ duration }} min, {{ steps | length - 1 }} connection(s)
+                    </strong>
+                {% else %}
+                    <a href="{{ url_for('views.home', from_id=from_id, to_id=to_id, route_index=loop.index0) }}">
+                        Route {{ loop.index }} — {{ duration }} min, {{ steps | length - 1 }} connection(s)
+                    </a>
+                {% endif %}
+            </li>
         {% endfor %}
-    </ol>
-{% elif request.method == 'POST' %}
-    <p>No valid route found.</p>
+    </ul>
+{% endif %}
+
+{% if routes %}
+    <h3>Selected Route Details</h3>
+    <ul>
+        {% for segment in routes %}
+            <li>
+                <strong>{{ segment.train_name }}</strong>: 
+                {{ segment.from_city.name }} → {{ segment.to_city.name }} |
+                {{ segment.departure.strftime('%H:%M') }} → {{ segment.arrival.strftime('%H:%M') }} |
+                {{ segment.duration }}
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}
 {% endblock %}
 
