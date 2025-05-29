@@ -1,5 +1,6 @@
 from website import create_app, db
 from website.models import City, Route
+from datetime import datetime
 
 app = create_app()
 app.app_context().push()
@@ -39,18 +40,40 @@ def route_exists(from_name, to_name, train_name):
 def get_city_id(name):
     return City.query.filter_by(name=name).first().id
 
+def to_time(t_str):
+    return datetime.strptime(t_str, "%H:%M").time()
+
 routes = [
     ("Berlin", "Hamburg", "ICE 808", "08:30", "10:15", "1h 45m"),
+    ("Berlin", "Frankfurt", "ICE 1001", "07:00", "10:00", "3h"),
+    ("Berlin", "Hamburg", "ICE 808", "08:00", "10:00", "2h"),
+    ("Berlin", "Hamburg", "ICE 810", "09:00", "11:00", "2h"),
+    ("Berlin", "Frankfurt", "ICE 500", "13:00", "16:00", "3h"),
+
     ("Frankfurt", "Munich", "ICE 622", "09:00", "12:30", "3h 30m"),
+    ("Frankfurt", "Munich", "ICE 600", "10:45", "13:15", "2h 30m"),
+    ("Frankfurt", "Munich", "ICE 601", "11:30", "14:00", "2h 30m"),
+
     ("Cologne", "Stuttgart", "IC 2310", "11:00", "13:45", "2h 45m"),
+
     ("Leipzig", "Dresden", "RE 50", "10:20", "11:30", "1h 10m"),
 
-    ("Berlin", "Frankfurt", "ICE 1001", "07:00", "10:00", "3h"),
+    
     ("Hamburg", "Munich", "ICE 1202", "13:00", "17:00", "4h"),
+    ("Hamburg", "Munich", "ICE 900", "11:30", "16:00", "4h 30m"),
+    ("Hamburg", "Munich", "ICE 901", "12:30", "17:00", "4h 30m"),
+
     ("Dresden", "Nuremberg", "RE 200", "15:00", "18:00", "3h"),
+
     ("Stuttgart", "Leipzig", "IC 3003", "12:00", "15:00", "3h"),
+
     ("Bremen", "Cologne", "RE 75", "06:30", "09:00", "2h 30m"),
+
     ("Munich", "Düsseldorf", "ICE 4004", "14:30", "17:30", "3h"),
+    ("Munich", "Düsseldorf", "ICE 4005", "15:30", "18:30", "3h"),
+    ("Munich", "Berlin", "ICE 4004", "10:30", "13:30", "3h"),
+    ("Munich", "Frankfurt", "ICE 4005", "13:30", "16:30", "3h"),
+
 ]
 
 for from_name, to_name, train, dep, arr, dur in routes:
@@ -61,8 +84,8 @@ for from_name, to_name, train, dep, arr, dur in routes:
             from_city_id=from_id,
             to_city_id=to_id,
             train_name=train,
-            departure=dep,
-            arrival=arr,
+            departure=to_time(dep),
+            arrival=to_time(arr),
             duration=dur
         )
         db.session.add(new_route)

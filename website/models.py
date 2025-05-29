@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+from datetime import datetime
 
 
 # class Note(db.Model):
@@ -33,8 +34,8 @@ class Route(db.Model):
     from_city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     to_city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     train_name = db.Column(db.String(100), nullable=False)
-    departure = db.Column(db.String(10), nullable=False)
-    arrival = db.Column(db.String(10), nullable=False)
+    departure = db.Column(db.Time, nullable=False)
+    arrival = db.Column(db.Time, nullable=False)
     duration = db.Column(db.String(20), nullable=False)
 
     from_city = db.relationship('City', foreign_keys=[from_city_id], backref='departures')
